@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_example (
+module tt_um_test_project_js (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -16,12 +16,20 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
+  wire [3:0] count;
+  wire [3:0] load  = ui_in[3:0];
+  wire [1:0] sel = ui_in[5:4];
+  wire l_en = ui_in[6];
+  wire c_en = ui_in[7];
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
+  assign uo_out  = {4'b0,count};  // Example: ou_out is the sum of ui_in and uio_in
   assign uio_out = 0;
   assign uio_oe  = 0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+  wire _unused = &{1'b0, 1'b0, 1'b0, 1'b0};
+  // Instantiate the main module
 
+
+  modncounter test_design(load,sel,clk,rst_n,l_en,c_en,count);
 endmodule
